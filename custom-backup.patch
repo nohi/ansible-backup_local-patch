@@ -1,0 +1,49 @@
+--- basic.py	2016-08-04 16:53:01.890076400 +0900
++++ basic.new.py	2016-08-04 16:54:12.158118000 +0900
+@@ -1808,6 +1808,46 @@
+     def backup_local(self, fn):
+         '''make a date-marked backup of the specified file, return True or False on success or failure'''
+ 
++##########################################################################
++        cur_date = time.strftime("%Y%m%d", time.localtime(time.time()))
++        cur_time = time.strftime("%H%M%S", time.localtime(time.time()))
++
++        # backup settings
++        backup_generation = 5
++        backdest_root = '/var/log/ansible/backup'
++        backdest_prefix = os.path.join(backdest_root, cur_date)
++        print(backdest_prefix)
++        # backdest_prefix = '%s%s%s' % (backdest_root, os.sep, cur_date)
++
++        # remove old backup
++        bk_dir_list = os.listdir(backdest_root)
++        bk_dir_list.sort()
++        while True:
++            if len(bk_dir_list) <= backup_generation:
++                break
++            else:
++                bk_dir_name = bk_dir_list.pop(0)
++                del_dir = os.path.join(backdest_root, bk_dir_name)
++                print(del_dir)
++                # del_dir = "%s%s%s" % (backdest_root, os.sep, bk_dir_name)
++                shutil.rmtree(del_dir)
++
++        # ext_format: '<filename>.<date>-<time>-<pid>~'
++        ext = '%s-%s-%s~' % (cur_date, cur_time, os.getpid())
++        backupdest = '%s%s.%s' % (backdest_prefix, fn, ext)
++
++        if os.path.exists(fn):
++            try:
++                if not os.path.exists(os.path.dirname(backupdest)):
++                    os.makedirs(os.path.dirname(backupdest))
++                shutil.copy2(fn, backupdest)
++            except (shutil.Error, IOError):
++                e = get_exception()
++                self.fail_json(msg='Could not make backup of %s to %s: %s' % (fn, backupdest, e))
++
++        return backupdest
++##########################################################################
++
+         backupdest = ''
+         if os.path.exists(fn):
+             # backups named basename-YYYY-MM-DD@HH:MM:SS~
