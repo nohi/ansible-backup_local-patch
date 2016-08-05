@@ -12,8 +12,6 @@
 +        backup_generation = 5
 +        backdest_root = '/var/log/ansible/backup'
 +        backdest_prefix = os.path.join(backdest_root, cur_date)
-+        print(backdest_prefix)
-+        # backdest_prefix = '%s%s%s' % (backdest_root, os.sep, cur_date)
 +
 +        # remove old backup
 +        bk_dir_list = os.listdir(backdest_root)
@@ -24,8 +22,6 @@
 +            else:
 +                bk_dir_name = bk_dir_list.pop(0)
 +                del_dir = os.path.join(backdest_root, bk_dir_name)
-+                print(del_dir)
-+                # del_dir = "%s%s%s" % (backdest_root, os.sep, bk_dir_name)
 +                shutil.rmtree(del_dir)
 +
 +        # ext_format: '<filename>.<date>-<time>-<pid>~'
