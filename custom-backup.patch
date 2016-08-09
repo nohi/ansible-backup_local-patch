@@ -1,6 +1,6 @@
---- basic.py	2016-08-05 12:30:34.343165000 +0900
-+++ basic.new.py	2016-08-05 12:26:47.792439900 +0900
-@@ -1808,6 +1808,71 @@
+--- basic.py	2016-08-09 17:07:14.162253900 +0900
++++ basic.new.py	2016-08-09 17:14:08.298970800 +0900
+@@ -1808,6 +1808,74 @@
      def backup_local(self, fn):
          '''make a date-marked backup of the specified file, return True or False on success or failure'''
  
