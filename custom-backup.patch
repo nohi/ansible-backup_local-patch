@@ -13,6 +13,9 @@
 +        backdest_root = '/var/log/ansible/backup'
 +        backdest_prefix = os.path.join(backdest_root, cur_date)
 +
++        if not os.path.exists(backdest_root):
++            os.makedirs(backdest_root)
++
 +        # remove old backup
 +        bk_dir_list = os.listdir(backdest_root)
 +        bk_dir_list.sort()
